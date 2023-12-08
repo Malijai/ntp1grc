@@ -1,0 +1,60 @@
+{% extends 'personnentp1_base.html' %}
+{% load i18n %}
+
+{% block maincontent %}
+        <div class="w3-row w3-theme-d3">
+            <div class="pagination">
+            </div>
+        </div>
+    <div class="w3-container w3-padding-10">
+        <form method="POST" class="province-form" enctype="multipart/form-data" id="province">
+                       {% csrf_token %}
+            <select name="provinceid" >
+                <option value="">Choisir la province</option>
+            {% for province in provinces %}
+              {% if province.id <= 3 %}
+              <option value="{{province.id}}">{{province.reponse_en}}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+            <button type="submit" class="w3-button w3-orange" name="Choisir">{% trans "Choisir la province" %}</button>
+        </form>
+        <div class="w3-theme-l3">
+            <h3>Attention consignes légèrements différentes par rapport à l'autre système</h3>
+            Il s'agit de mettre à jour des dossiers dont des données ont déjà été rentrées il y a des années
+            <a href="https://ntp-ptn.org/publications">(voir les publications)</a>
+            <ul>
+                <li>Il y a seulement 2 provinces : le Québec et le BC.</li>
+                <li>Les dossiers du QC ont été imprimés dans un ordre alphabétique relatif, donc avant de conclure qu'un dossier n'est
+                pas imprimé vérifier dans les 10 dossiers suivants dans la pile. Ceux du BC sont dans l'ordre de la liste papier</li>
+            <li>Après avoir repéré la personne (numéro + prénom) dans la liste du système de saisie
+                (triée par ordre de numéro), trouver :
+                <ul>
+                    <li>La <b>date de la dernière décision</b> qui est inscrite dans le dossier criminel et</li>
+                    <li>Vérifier s'il y a une <b>date de libération dans le dossier</b> (les libérations n'ont pas
+                        été rentrées lors de la première saisie).</li>
+                </ul>
+            </ul>
+           <ul>
+            <li>S'il y a une date de libération : cliquer sur <b>ajouter des délits</b> et rentrer les libérations dans le système,
+                    ensuite seulement cliquer sur <b>mettre à jour la personne</b> et remplir les infos demandées
+                <i>(autrement le dossier risque de se fermer avant l'entrée des libérations)</i></li>
+            <li>Dans tous les autres cas cliquer sur <b>mettre à jour la personne</b> et remplir les infos demandées</li>
+                <ul>
+                    <li>Si la date de la dernière décision est postérieure aux données déjà rentrées, le système redirigera
+                        vers l'entrée des délits/décisions (idem au système précédent)</li>
+                    <li>Si la date est antérieure ou égale aux décisions déjà dans le système, le dossier sera fermé.</li>
+                    <li>ATTENTION 1... Si jamais il y a une date de décès la rentrer en même temps que la date du dernier délit</li>
+                    <li>ATTENTION 2... Si jamais il y a une date de libération penser à la rentrer avant la mise à jour de la personne</li>
+                </ul>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <div class="w3-row w3-theme-d3">
+            <div class="pagination">
+            </div>
+        </div>
+    </footer>
+{% endblock maincontent %}
+

@@ -1,0 +1,113 @@
+{% extends 'personnentp1_base.html' %}
+{% load i18n %}
+
+{% block maincontent %}
+
+<div class="w3-container">
+   <h2 class="w3-amber">#{{ personne.codeGRC }}- Nouveaux delits et Délits enregistrés dans la BD</h2>
+    <div class="w3-twothird w3-center">
+        <form method="POST" class="delits-form" enctype="multipart/form-data" id="delit">
+        {% csrf_token %}
+        <table class="w3-table-all">
+            <th colspan="2" class="w3-button w3-theme-l2" >
+            <a href="{% url 'Rechercherviol' %}"
+               target="Codes Violation/CC"
+               onclick="window.open('', 'Codes Violation/CC', 'width=800,height=300,status=yes,resizable=yes,scrollbars=yes,toolbar=no')"
+               >{% trans "Recherche de code de violation" %}</a>
+            </th>
+        <tr><td>{{ form.date_sentence.label_tag }} {{ form.date_sentence }}</td>
+            <td>{{ form.ordre_delit.label_tag }} {{ form.ordre_delit }}</td></tr>
+        <tr><td>{{ form.lieu_sentence.label_tag }} {{ form.lieu_sentence }}</td>
+            <td>{{ form.type_tribunal.label_tag }}
+                {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Tribunal" nom_champ="delit-type_tribunal" %}</td></tr>
+        <tr><td>{{ form.codeCCdelit.label_tag }} {{ form.codeCCdelit }}</td>
+            <td>{{ form.descriptiondelit.label_tag }} {{ form.descriptiondelit }}</td></tr>
+        <tr><td>{{ form.nombre_chefs.label_tag }} {{ form.nombre_chefs }}</td>
+            <td>{{ form.violation.label_tag }} {{ form.violation }}</td></tr>
+        <tr><td colspan="2">{{ form.verdict.label_tag }}
+            {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Verdict" nom_champ="delit-verdict" %}</td></tr>
+    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td colspan="2">{{ form.amendeON.label_tag }} {{ form.amendeON }}</td></tr>
+        <tr><td>{{ form.amende_type.label_tag }}
+            {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Type" nom_champ="delit-amende_type" %}</td>
+            <td>{{ form.amendecout.label_tag }} {{ form.amendecout }}</td></tr>
+    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td colspan="2">{{ form.detentionON.label_tag }} {{ form.detentionON }}</td></tr>
+        <tr><td>{{ form.detentionduree.label_tag }} {{ form.detentionduree }}</td>
+            <td>{{ form.unitedetention.label_tag }}
+                {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Duree" nom_champ="delit-unitedetention" %}
+                </td></tr>
+    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td colspan="2">{{ form.probationON.label_tag }} {{ form.probationON }}</td></tr>
+        <tr><td>{{ form.probationduree.label_tag }} {{ form.probationduree }}</td>
+            <td>{{ form.uniteprobation.label_tag }}
+            {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Duree" nom_champ="delit-uniteprobation" %}
+        </td></tr>
+    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td colspan="2">{{ form.interdictionON.label_tag }} {{ form.interdictionON }}</td></tr>
+        <tr><td>{{ form.interdictionduree.label_tag }} {{ form.interdictionduree }}</td>
+            <td>{{ form.uniteinterdiction.label_tag }}
+            {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Duree" nom_champ="delit-uniteinterdiction" %}
+        </td></tr>
+        <tr><td colspan="2">{{ form.interdictiondetails.label_tag }} {{ form.interdictiondetails }}</td></tr>
+    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td colspan="2">{{ form.surcisON.label_tag }} {{ form.surcisON }}</td></tr>
+        <tr><td>{{ form.surcisduree.label_tag }} {{ form.surcisduree }}</td>
+            <td>{{ form.unitesurcis.label_tag }}
+            {% include "languentp_snippet.html" with language=LANGUAGE_CODE table="Duree" nom_champ="delit-unitesurcis" %}
+            </td></tr>
+    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td colspan="2">{{ form.autreON.label_tag }} {{ form.autreON }}</td></tr>
+        <tr><td colspan="2">{{ form.autredetails.label_tag }} {{ form.autredetails }}</td></tr>
+                    <tr><td colspan="2" class="w3-theme-l2"></td></tr>
+        <tr><td><button type="submit" class="w3-button w3-amber" name="Savequit">{% trans "Enregistrer & quit" %}</button></td>
+            <td><button type="submit" class="w3-button w3-orange" name="Savedelit">{% trans "Enregistrer & ajouter délit / libération" %}</button></td>
+        </tr>
+        </table>        </form>
+    </div>
+    <div class="w3-third">
+
+        <form method="POST" class="libe-form" enctype="multipart/form-data" id="liberation">
+        {% csrf_token %}
+            <table class="w3-table-all">
+            {{ libe_form.as_table }}
+            <tr><td><button type="submit" class="w3-button w3-amber" name="Savelibequit">Save and quit</button></td>
+            <td><button type="submit" class="w3-button w3-orange" name="Savelibe">Save et ajouter un autre delit / libération</button></td>
+            </tr>
+            </table>
+        </form>
+
+        <div class="w3-padding-16 w3-theme-l4">
+            <h3>Délits enregistrés dans la BD</h3>
+            <table class="w3-table-all">
+                <tr>
+                    <th>date sentence</th>
+                    <th>ordre</th>
+                    <th>codeCCdelit</th>
+                    <th>violation</th>
+                </tr>
+            {% for delit in delits %}
+            <tr>
+                <td>{{ delit.date_sentence }}</td>
+                <td>{{ delit.ordre_delit }}</td>
+                <td>{{ delit.codeCCdelit }}</td>
+                <td>{{ delit.violation_id }}</td>
+            </tr>
+            {% endfor %}
+            </table>
+            <h3>Libérations enregistrées dans la BD</h3>
+            <table class="w3-table-all">
+                <tr>
+                    <th>date libération</th>
+                </tr>
+            {% for liberation in liberations %}
+            <tr>
+                <td>{{ liberation.date_liberation }}</td>
+            </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
