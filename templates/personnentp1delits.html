@@ -84,14 +84,14 @@
                     <th>date sentence</th>
                     <th>ordre</th>
                     <th>codeCCdelit</th>
-                    <th>violation</th>
+                    <th>Action</th>
                 </tr>
             {% for delit in delits %}
             <tr>
                 <td>{{ delit.date_sentence }}</td>
                 <td>{{ delit.ordre_delit }}</td>
                 <td>{{ delit.codeCCdelit }}</td>
-                <td>{{ delit.violation_id }}</td>
+                <td><a class="w3-btn w3-red w3-hover-purple" href="{% url 'enleve_delit' delit.id %}">Suprimer</a></td>
             </tr>
             {% endfor %}
             </table>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -153,4 +153,11 @@ def personnetp1ferme(request, pk):
     messages.success(request, "Fermeture de " + str(personne.codeGRC))
     return redirect('listentp1personne', personne.province_id)
 
+
+@login_required(login_url=settings.LOGIN_URI)
+def enleve_delit(request, id):
+    delit = get_object_or_404(Delitsplus, id=id)
+    Delitsplus.objects.filter(id=id).delete()
+    messages.success(request, 'Un délit de {} a été suprimé'.format(delit.personnegrc))
+    return redirect(personnentp1delits, delit.personnegrc_id)
 

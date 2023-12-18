@@ -82,7 +82,7 @@ class Personnegrc(models.Model):
     prenom = models.CharField(max_length=200, verbose_name=_("Prénom"))
     province = models.ForeignKey(Province, on_delete=models.DO_NOTHING)
     delit = models.IntegerField(default=1, verbose_name=_("Présence ancien délits"),)
-    dateprint1 = models.DateField(verbose_name=_("Ancienne date print"),)
+    dateprint1 = models.DateField(verbose_name=_("Ancienne date print"), blank=True, null=True)
     oldpresencefps = models.IntegerField(verbose_name=_("Présence ancien FPS"),)
     dateprint2 = models.DateField(verbose_name=_("Date print. Laisser vide si pas de fichier."), blank=True, null=True)
     newdelit = models.BooleanField(default=1, verbose_name=_("Présence de délits après la date du dernier verdict rentré"),)

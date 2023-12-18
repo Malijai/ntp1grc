@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.urls import include, path
-from .views import listentp1personne, personnentp1edit, personnentp1delits, personnetp1ferme, choixntp1province
+from .views import listentp1personne, personnentp1edit, personnentp1delits, personnetp1ferme, choixntp1province, enleve_delit
 
 
 urlpatterns = [
@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:pi>/', listentp1personne, name='listentp1personne'),
     path('fermentp1/<int:pk>/',personnetp1ferme, name='personnetp1ferme'),
     path('provincentp1', choixntp1province, name='choixntp1province'),
+    path('enleventp1/<int:id>/', enleve_delit, name='enleve_delit'),
 #    path('do_pdf/', do_chezsoi_pdf, name='do_chezsoi_pdf'),
 #    path('do_csv_sent/<int:pi>/', export_csv_sent, name='export_csv_sent'),
 #    path('do_csv_libe/<int:pi>/', export_csv_libe, name='export_csv_libe'),
